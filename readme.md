@@ -15,6 +15,7 @@ This is a temporary readme which will be distributed into other notes later
   - [Using MongoDB Locally](#using-mongodb-locally)
     - [Installation](#installation)
     - [Running](#running)
+  - [Specifying node version for deployment](#specifying-node-version-for-deployment)
 
 <!-- tocstop -->
 
@@ -125,4 +126,15 @@ sudo systemctl restart mongod
 
 # use mongoDB in the terminal
 mongo
+```
+
+## Specifying node version for deployment
+
+[stackoverflow](https://stackoverflow.com/questions/29349684/how-can-i-specify-the-required-node-js-version-in-package-json)
+
+```json
+  "engines": {
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
+  },
 ```
