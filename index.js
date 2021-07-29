@@ -19,6 +19,7 @@ const schema = yup.object().shape({
 
 const db = monk(process.env.MONGO_URI);
 const urls = db.get("urls");
+urls.createIndex({ slug: 1 }, { unique: true });
 
 const app = express();
 
@@ -45,16 +46,18 @@ app.post("/url", async (req, res, next) => {
           break;
         }
       }
-    } else {
-      const duplicate = await urls.findOne({ slug });
-      if (duplicate) {
-        throw new Error("Slug in use 🐌");
-      }
     }
 
-    const created = urls.insert({ slug, url });
+    const created = await urls.insert({ slug, url });
     res.status(200).json({ created });
   } catch (error) {
+    if (error.message.startsWith("E11000")) {
+      error.message = {
+        error: "Slug in use 🐌",
+        details: error.message,
+      };
+    }
+    console.log("caught error");
     next(error);
   }
 });
