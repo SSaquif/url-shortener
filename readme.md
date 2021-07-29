@@ -12,10 +12,11 @@ This is a temporary readme which will be distributed into other notes later
   - [Middleware & Error Handling](#middleware--error-handling)
     - [next()](#next)
     - [Behaviour](#behaviour)
+  - [Specifying node version for deployment](#specifying-node-version-for-deployment)
   - [Using MongoDB Locally](#using-mongodb-locally)
     - [Installation](#installation)
     - [Running](#running)
-  - [Specifying node version for deployment](#specifying-node-version-for-deployment)
+  - [Indexes in Mongo DB](#indexes-in-mongo-db)
 
 <!-- tocstop -->
 
@@ -89,6 +90,17 @@ app.use((error, req, res, next) => {
 });
 ```
 
+## Specifying node version for deployment
+
+[stackoverflow](https://stackoverflow.com/questions/29349684/how-can-i-specify-the-required-node-js-version-in-package-json)
+
+```json
+  "engines": {
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
+  },
+```
+
 ## Using MongoDB Locally
 
 Been a while since I have done this.
@@ -128,13 +140,15 @@ sudo systemctl restart mongod
 mongo
 ```
 
-## Specifying node version for deployment
+## Indexes in Mongo DB
 
-[stackoverflow](https://stackoverflow.com/questions/29349684/how-can-i-specify-the-required-node-js-version-in-package-json)
+Indexes work similarly in mongo as with other DB
 
-```json
-  "engines": {
-    "node": ">=10.0.0",
-    "npm": ">=6.0.0"
-  },
+Indexes can be used to make fields unique, An example using monk
+
+```js
+const db = monk(process.env.MONGO_URI);
+const urls = db.get("urls");
+// This will make slug property unqiue for each document
+urls.createIndex({ slug: 1 }, { unique: true });
 ```
