@@ -17,6 +17,7 @@ This is a temporary readme which will be distributed into other notes later
     - [Installation](#installation)
     - [Running](#running)
   - [Indexes in Mongo DB](#indexes-in-mongo-db)
+    - [Issues faced with indexing](#issues-faced-with-indexing)
 
 <!-- tocstop -->
 
@@ -152,3 +153,11 @@ const urls = db.get("urls");
 // This will make slug property unqiue for each document
 urls.createIndex({ slug: 1 }, { unique: true });
 ```
+
+### Issues faced with indexing
+
+In order to properly use indexes
+
+The database and collection should already be set up. Read what happened below
+
+> I dropped my collection and db, which means they were created after the first insert. Since the index creation rubs at the begining (in global scope) when node first runs, it fails then because the collection and/or db did not exists. So if you are using Indexes make sure the db and collections are already created
