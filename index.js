@@ -31,18 +31,29 @@ app.use(express.static("./public"));
 
 // create short url
 app.post("/url", async (req, res, next) => {
-  let { slug, url } = req.body;
-
   try {
+    let { slug, url } = req.body;
     await schema.validate({ slug, url });
 
+    slug = slug?.toLowerCase();
+
     if (!slug) {
-      slug = nanoid(5);
+      while (true) {
+        slug = nanoid(5).toLowerCase();
+        const duplicate = await urls.findOne({ slug });
+        if (!duplicate) {
+          break;
+        }
+      }
+    } else {
+      const duplicate = await urls.findOne({ slug });
+      if (duplicate) {
+        throw new Error("Slug in use 🐌");
+      }
     }
 
-    slug = slug.toLowerCase();
-
-    res.status(200).json({ slug, url });
+    const created = urls.insert({ slug, url });
+    res.status(200).json({ created });
   } catch (error) {
     next(error);
   }
