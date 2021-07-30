@@ -21,8 +21,6 @@ const schema = yup.object().shape({
 });
 
 const db = monk(process.env.MONGO_URI);
-console.log(process.env.MONGO_URI);
-
 const urls = db.get("urls");
 urls.createIndex({ slug: 1 }, { unique: true });
 
@@ -54,7 +52,6 @@ app.get("/:slug", async (req, res, next) => {
 // create short url
 app.post("/url", async (req, res, next) => {
   try {
-    console.log(req.body);
     let { slug, url } = req.body;
     await schema.validate({ slug, url });
     slug = slug?.toLowerCase();
@@ -76,11 +73,11 @@ app.post("/url", async (req, res, next) => {
         details: error.message,
       };
     }
-    console.log("caught error");
     next(error);
   }
 });
 
+// error handling
 app.use((error, req, res, next) => {
   if (error.status) {
     res.status(error.status);
@@ -101,5 +98,5 @@ app.get("*", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`listening on ${PORT}`);
+  console.log(`Listening on Port: ${PORT}`);
 });
