@@ -15,6 +15,7 @@ Still a Work In Progress
    2. Invalid url
    3. Invalid slug
    4. Duplicate slug
+4. Use 301 status for redirection
 
 ### Maybe in the Future
 
