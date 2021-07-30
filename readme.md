@@ -22,7 +22,10 @@ This is a temporary readme which will be distributed into other notes later
     - [Inline event handlers](#inline-event-handlers)
     - [Labels and `for` and `name`](#labels-and-for-and-name)
     - [Looping FormData](#looping-formdata)
-    - [Slug (NP)](#slug-np)
+    - [301 status for redirection](#301-status-for-redirection)
+  - [Deployment Notes](#deployment-notes)
+    - [Code Changes](#code-changes)
+  - [Meaning of Slug](#meaning-of-slug)
 
 <!-- tocstop -->
 
@@ -221,7 +224,23 @@ for (let pair of formData.entries()) {
 ['age', '27'] # 2nd Loop
 ```
 
-### Slug (NP)
+### 301 status for redirection
+
+In the video near the end, some one comments that 301 status should be used for redirection. See that comment for details
+
+## Deployment Notes
+
+### Code Changes
+
+Can use `dotenv` in production since it's a dev dependancy.
+
+```js
+if (process.env.NODE_ENV === "development") {
+  require("dotenv").config();
+}
+```
+
+## Meaning of Slug
 
 1. [Slug in URLs](https://en.wikipedia.org/wiki/Clean_URL#:~:text=It%20is%20usually%20the%20end,an%20article%20for%20internal%20use.)
 2. [Slug History](<https://en.wikipedia.org/wiki/Slug_(publishing)>)

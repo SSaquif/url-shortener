@@ -6,7 +6,9 @@ const yup = require("yup");
 const { nanoid } = require("nanoid");
 const monk = require("monk");
 
-if (process.env.NODE_ENV === "development") {
+console.log(process.env.NODE_ENV);
+
+if (process.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
