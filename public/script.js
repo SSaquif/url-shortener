@@ -19,14 +19,21 @@ const handleSubmit = async (event) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(formDataObj),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.created) {
-        console.log(`${window.location.protocol}//${window.location.hostname}`);
-      }
-      console.log(data);
-    });
+  });
+  const data = await response.json();
+
+  if (data.created) {
+    console.log(`${window.location.protocol}//${window.location.hostname}`);
+    const resultSection = document.getElementById("result");
+
+    resultSection.innerText = null;
+
+    const newLink = document.createElement("a");
+    newLink.innerText = "hello";
+    newLink.href = "https://www.google.com/";
+    resultSection.appendChild(newLink);
+  }
+  console.log(data);
 };
 
 form.addEventListener("submit", handleSubmit);

@@ -18,6 +18,8 @@ const schema = yup.object().shape({
 });
 
 const db = monk(process.env.MONGO_URI);
+console.log(process.env.MONGO_URI);
+
 const urls = db.get("urls");
 urls.createIndex({ slug: 1 }, { unique: true });
 
@@ -48,14 +50,11 @@ app.get("/:slug", async (req, res, next) => {
 
 // create short url
 app.post("/url", async (req, res, next) => {
-  console.log("hello");
   try {
     console.log(req.body);
     let { slug, url } = req.body;
     await schema.validate({ slug, url });
-
     slug = slug?.toLowerCase();
-
     if (!slug) {
       while (true) {
         slug = nanoid(5).toLowerCase();
@@ -65,7 +64,6 @@ app.post("/url", async (req, res, next) => {
         }
       }
     }
-
     const created = await urls.insert({ slug, url });
     return res.status(200).json({ created });
   } catch (error) {
