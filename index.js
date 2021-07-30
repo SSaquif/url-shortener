@@ -30,9 +30,27 @@ app.use(express.json());
 
 app.use(express.static("./public"));
 
+// redirect using short url
+app.get("/:slug", async (req, res, next) => {
+  try {
+    const { slug } = req.params;
+    slug.toLowerCase();
+    const foundUrl = await urls.findOne({ slug });
+
+    if (foundUrl) {
+      return res.redirect(foundUrl.url);
+    }
+    return res.redirect(`/?error=${slug} not found`);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // create short url
 app.post("/url", async (req, res, next) => {
+  console.log("hello");
   try {
+    console.log(req.body);
     let { slug, url } = req.body;
     await schema.validate({ slug, url });
 
@@ -49,7 +67,7 @@ app.post("/url", async (req, res, next) => {
     }
 
     const created = await urls.insert({ slug, url });
-    res.status(200).json({ created });
+    return res.status(200).json({ created });
   } catch (error) {
     if (error.message.startsWith("E11000")) {
       error.message = {
@@ -69,14 +87,14 @@ app.use((error, req, res, next) => {
     res.status(500);
   }
 
-  res.json({
+  return res.json({
     message: error.message,
     stack: process.env.NODE_ENV === "production" ? "💥" : error.stack,
   });
 });
 
 app.get("*", (req, res) => {
-  res
+  return res
     .status(404)
     .json({ status: "404", data: "OOPs seems like there's nothing here yet" });
 });

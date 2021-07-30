@@ -6,6 +6,14 @@
 
 body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: darksalmon;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: solid tomato;
 }
 
 header h1 {

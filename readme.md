@@ -18,6 +18,11 @@ This is a temporary readme which will be distributed into other notes later
     - [Running](#running)
   - [Indexes in Mongo DB](#indexes-in-mongo-db)
     - [Issues faced with indexing](#issues-faced-with-indexing)
+  - [Basic Web Dev](#basic-web-dev)
+    - [Inline event handlers](#inline-event-handlers)
+    - [Labels and `for` and `name`](#labels-and-for-and-name)
+    - [Looping FormData](#looping-formdata)
+    - [Slug (NP)](#slug-np)
 
 <!-- tocstop -->
 
@@ -161,3 +166,62 @@ In order to properly use indexes
 The database and collection should already be set up. Read what happened below
 
 > I dropped my collection and db, which means they were created after the first insert. Since the index creation rubs at the begining (in global scope) when node first runs, it fails then because the collection and/or db did not exists. So if you are using Indexes make sure the db and collections are already created
+
+## Basic Web Dev
+
+### Inline event handlers
+
+Dont us inline event handlers like this
+
+```html
+<form id="url-form" onsubmit="handleSubmit()"></form>
+```
+
+They can produce error
+
+```bash
+Refused to execute inline event handler because it violates the following Content Security Policy directive: "script-src-attr 'none'". Either the 'unsafe-inline' keyword, a hash ('sha256-...'), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations unless the 'unsafe-hashes' keyword is present.
+```
+
+Just add the eventListener in the JS script instead
+
+### Labels and `for` and `name`
+
+Always forget for property of a `label` must match the respective `name` property of the input element ie input, select tags
+
+Otherwise things like `FormData` don't work
+
+```html
+<form id="form-1">
+  <label for="url">URL</label>
+  <input name="url" type="text" />
+</form>
+```
+
+### Looping FormData
+
+Getting all for data and creating an object to convert to json string
+
+```js
+const formData = new FormData(form);
+const formDataObj = {};
+
+for (let pair of formData.entries()) {
+  console.log(pair);
+  if (pair[1] !== "") {
+    formDataObj[pair[0]] = pair[1];
+  }
+}
+```
+
+`for (let pair of formData.entries())` will return the name and value of the form constituents in arrays. Lets say we have a form with 2 fields. Then pair is as follows
+
+```bash
+['name', 'Sadnan'] # 1st loop
+['age', '27'] # 2nd Loop
+```
+
+### Slug (NP)
+
+1. [Slug in URLs](https://en.wikipedia.org/wiki/Clean_URL#:~:text=It%20is%20usually%20the%20end,an%20article%20for%20internal%20use.)
+2. [Slug History](<https://en.wikipedia.org/wiki/Slug_(publishing)>)

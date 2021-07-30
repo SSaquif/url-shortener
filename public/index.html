@@ -9,5 +9,20 @@
   </head>
   <body>
     <header><h1>URL Shortener</h1></header>
+    <main class="wrapper">
+      <form id="url-form">
+        <div id="row">
+          <label for="url">URL</label>
+          <input name="url" type="text" />
+        </div>
+        <div id="row">
+          <label for="slug">New Name</label>
+          <input name="slug" type="text" />
+        </div>
+        <button type="submit">Get Link</button>
+      </form>
+      <section>This is where the newly generated link will show up</section>
+    </main>
+    <script src="./script.js"></script>
   </body>
 </html>
