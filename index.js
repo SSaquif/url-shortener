@@ -5,7 +5,7 @@ const cors = require("cors");
 const yup = require("yup");
 const { nanoid } = require("nanoid");
 const monk = require("monk");
-require("dotenv").config();
+// require("dotenv").config();
 
 const PORT = process.env.PORT || 8000;
 
