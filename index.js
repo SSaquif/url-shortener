@@ -21,7 +21,9 @@ const schema = yup.object().shape({
 });
 
 const db = monk(process.env.MONGO_URI);
+
 const urls = db.get("urls");
+// console.log(urls);
 urls.createIndex({ slug: 1 }, { unique: true });
 
 const app = express();
@@ -58,13 +60,16 @@ app.post("/url", async (req, res, next) => {
     if (!slug) {
       while (true) {
         slug = nanoid(5).toLowerCase();
+        console.log("slug", slug);
         const duplicate = await urls.findOne({ slug });
+        console.log(duplicate, "dsda");
         if (!duplicate) {
           break;
         }
       }
     }
     const created = await urls.insert({ slug, url });
+    console.log(created);
     return res.status(200).json({ created });
   } catch (error) {
     if (error.message.startsWith("E11000")) {
@@ -79,6 +84,7 @@ app.post("/url", async (req, res, next) => {
 
 // error handling
 app.use((error, req, res, next) => {
+  console.log(error);
   if (error.status) {
     res.status(error.status);
   } else {

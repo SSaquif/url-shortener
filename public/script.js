@@ -20,7 +20,9 @@ const handleSubmit = async (event) => {
     },
     body: JSON.stringify(formDataObj),
   });
+  console.log(response);
   const data = await response.json();
+  console.log(data);
 
   if (data.created) {
     console.log(`${window.location.protocol}//${window.location.hostname}`);
