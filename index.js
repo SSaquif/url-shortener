@@ -20,10 +20,11 @@ const schema = yup.object().shape({
   url: yup.string().trim().url().required(),
 });
 
+console.log(process.env.MONGO_URI);
 const db = monk(process.env.MONGO_URI);
 
 const urls = db.get("urls");
-// console.log(urls);
+
 urls.createIndex({ slug: 1 }, { unique: true });
 
 const app = express();
