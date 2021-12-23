@@ -55,14 +55,17 @@ app.get("/:slug", async (req, res, next) => {
 // create short url
 app.post("/url", async (req, res, next) => {
   try {
+    console.log("here1");
     let { slug, url } = req.body;
     await schema.validate({ slug, url });
     slug = slug?.toLowerCase();
     if (!slug) {
       while (true) {
+        console.log("here2");
         slug = nanoid(5).toLowerCase();
         console.log("slug", slug);
         const duplicate = await urls.findOne({ slug });
+        console.log("here3", duplicate);
         console.log(duplicate, "dsda");
         if (!duplicate) {
           break;
