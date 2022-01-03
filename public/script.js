@@ -27,7 +27,6 @@ const handleSubmit = async (event) => {
     const data = await response.json();
 
     if (!response.ok && data.error) {
-      console.log(data);
       throw new Error(data.error.message);
     } else if (!response.ok) {
       throw new Error("Bad Response");
