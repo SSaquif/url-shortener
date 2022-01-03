@@ -1,4 +1,5 @@
 const express = require("express");
+let ejs = require("ejs");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -29,6 +30,8 @@ urls.createIndex({ slug: 1 }, { unique: true });
 
 const app = express();
 
+app.set("view engine", "ejs");
+
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(cors());
@@ -55,9 +58,9 @@ app.get("/:slug", async (req, res, next) => {
 // create short url
 app.post("/url", async (req, res, next) => {
   try {
-    console.log("here1");
     let { slug, url } = req.body;
     await schema.validate({ slug, url });
+
     slug = slug?.toLowerCase();
     if (!slug) {
       while (true) {
@@ -72,16 +75,22 @@ app.post("/url", async (req, res, next) => {
         }
       }
     }
+
     const created = await urls.insert({ slug, url });
-    console.log(created);
     return res.status(200).json({ created });
   } catch (error) {
     if (error.message.startsWith("E11000")) {
       error.message = {
-        error: "Slug in use 🐌",
+        message: "slug in use",
+        details: error.message,
+      };
+    } else if (error.message.toLowerCase() === "url must be a valid url") {
+      error.message = {
+        message: "invalid url",
         details: error.message,
       };
     }
+
     next(error);
   }
 });
@@ -96,7 +105,7 @@ app.use((error, req, res, next) => {
   }
 
   return res.json({
-    message: error.message,
+    error: error.message,
     stack: process.env.NODE_ENV === "production" ? "💥" : error.stack,
   });
 });

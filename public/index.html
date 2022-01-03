@@ -8,20 +8,20 @@
     <link rel="stylesheet" href="./index.css" />
   </head>
   <body>
-    <header><h1>URL Shortener</h1></header>
+    <header><h1>Snip Snap</h1></header>
     <main class="wrapper">
       <form id="url-form">
-        <div id="row">
+        <div id="row" class="form-field">
           <label for="url">URL</label>
-          <input name="url" type="text" />
+          <input name="url" type="text" required />
         </div>
-        <div id="row">
+        <div id="row" class="form-field">
           <label for="slug">Slug</label>
           <input name="slug" type="text" />
         </div>
         <button type="submit">Get Link</button>
       </form>
-      <section id="result">Link</section>
+      <section id="result" class="result">Link</section>
     </main>
     <script src="./script.js"></script>
   </body>
